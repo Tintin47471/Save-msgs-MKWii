@@ -1,0 +1,4235 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Val74 - 〔&#128247;〕partage-screen</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        @font-face {
+            font-family: Whitney;
+            src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+            font-weight: 300;
+        }
+
+        @font-face {
+            font-family: Whitney;
+            src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+            font-weight: 400;
+        }
+
+        @font-face {
+            font-family: Whitney;
+            src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+            font-weight: 500;
+        }
+
+        @font-face {
+            font-family: Whitney;
+            src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+            font-weight: 600;
+        }
+
+        @font-face {
+            font-family: Whitney;
+            src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+            font-weight: 700;
+        }
+
+        body {
+            background-color: #36393e;
+            color: #dcddde;
+            font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 17px;
+            font-weight: 400;
+        }
+
+        a {
+            color: #00aff4;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            object-fit: contain;
+        }
+
+        .markdown {
+            max-width: 100%;
+            line-height: 1.3;
+            overflow-wrap: break-word;
+        }
+
+        .preserve-whitespace {
+            white-space: pre-wrap;
+        }
+
+        .spoiler-text {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .spoiler-text--hidden {
+            cursor: pointer;
+            background-color: #202225;
+            color: rgba(0, 0, 0, 0);
+        }
+
+        .spoiler-text--hidden:hover {
+            background-color: rgba(32, 34, 37, 0.8);
+        }
+
+        .spoiler-text--hidden::selection {
+            color: rgba(0, 0, 0, 0);
+        }
+
+        .quote {
+            display: flex;
+            margin: 0.05em 0;
+        }
+
+        .quote::before {
+            content: "";
+            margin-right: 0.5em;
+            border: 2px solid #4f545c;
+            border-radius: 3px;
+        }
+
+        .pre {
+            background-color: #2f3136;
+            font-family: "Consolas", "Courier New", Courier, monospace;
+        }
+
+        .pre--multiline {
+            margin-top: 0.25em;
+            padding: 0.5em;
+            border: 2px solid #282b30;
+            border-radius: 5px;
+            color: #b9bbbe;
+        }
+
+        .pre--multiline.hljs {
+            background-color: #2f3136;
+            color: #b9bbbe;
+        }
+
+        .pre--inline {
+            padding: 2px;
+            border-radius: 3px;
+            font-size: 0.85em;
+        }
+
+        .mention {
+            border-radius: 3px;
+            padding: 0 2px;
+            color: #dee0fc;
+            background-color: rgba(88, 101, 242, .3);
+            font-weight: 500;
+        }
+
+        .mention:hover {
+            background-color: #5865f2;
+            color: #ffffff
+        }
+
+        .timestamp {
+            border-radius: 3px;
+            padding: 0 2px;
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .emoji {
+            width: 1.325em;
+            height: 1.325em;
+            margin: 0 0.06em;
+            vertical-align: -0.4em;
+        }
+
+        .emoji--small {
+            width: 1em;
+            height: 1em;
+        }
+
+        .emoji--large {
+            width: 2.8em;
+            height: 2.8em;
+        }
+
+        .preamble {
+            display: grid;
+            margin: 0 0.3em 0.6em 0.3em;
+            max-width: 100%;
+            grid-template-columns: auto 1fr;
+        }
+
+        .preamble__guild-icon-container {
+            grid-column: 1;
+        }
+
+        .preamble__guild-icon {
+            max-width: 88px;
+            max-height: 88px;
+        }
+
+        .preamble__entries-container {
+            grid-column: 2;
+            margin-left: 0.6em;
+        }
+
+        .preamble__entry {
+            font-size: 1.4em;
+            color: #ffffff;
+        }
+
+        .preamble__entry--small {
+            font-size: 1em;
+        }
+
+        .chatlog {
+            max-width: 100%;
+        }
+
+        .chatlog__message-group {
+            display: grid;
+            margin: 0 0.6em;
+            padding: 0.9em 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            grid-template-columns: auto 1fr;
+        }
+
+        .chatlog__reference-symbol {
+            grid-column: 1;
+            margin: 8px 4px 4px 18px;
+            border-left: 2px solid #4f545c;
+            border-top: 2px solid #4f545c;
+            border-radius: 8px 0 0 0;
+        }
+
+        .chatlog__reference {
+            display: flex;
+            grid-column: 2;
+            margin-bottom: 0.25em;
+            font-size: 0.875em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            align-items: center;
+            color: #b5b6b8;
+        }
+
+        .chatlog__reference-avatar {
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            margin-right: 0.25em;
+        }
+
+        .chatlog__reference-name {
+            margin-right: 0.3em;
+            font-weight: 600;
+        }
+
+        .chatlog__reference-content {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chatlog__reference-content a:hover {
+            text-decoration: none;
+        }
+
+        .chatlog__reference-link {
+            cursor: pointer;
+            color: #b5b6b8;
+        }
+
+        .chatlog__reference-link * {
+            display: inline;
+            pointer-events: none;
+        }
+
+        .chatlog__reference-link:hover {
+            color: #ffffff;
+        }
+
+        .chatlog__reference-link:hover *:not(.spoiler-text) {
+            color: #ffffff;
+        }
+
+        .chatlog__reference-edited-timestamp {
+            margin-left: 0.25em;
+            font-size: 0.8em;
+            unicode-bidi: bidi-override;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chatlog__author-avatar-container {
+            grid-column: 1;
+            width: 40px;
+            height: 40px;
+            margin-right: 16px;
+        }
+
+        .chatlog__author-avatar {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .chatlog__messages {
+            grid-column: 2;
+            min-width: 50%;
+            direction: ltr;
+        }
+
+        .chatlog__author-name {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .chatlog__timestamp {
+            margin-left: 0.3em;
+            font-size: 0.75em;
+            direction: ltr;
+            unicode-bidi: bidi-override;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chatlog__message {
+            padding: 0.1em 0.3em;
+            margin: 0 -0.3em;
+            background-color: transparent;
+            transition: background-color 1s ease;
+        }
+
+        .chatlog__message--highlighted {
+            background-color: rgba(114, 137, 218, 0.2);
+        }
+
+        .chatlog__message--pinned {
+            background-color: rgba(249, 168, 37, 0.05);
+        }
+
+        .chatlog__content {
+            font-size: 0.95em;
+            word-wrap: break-word;
+        }
+
+        .chatlog__edited-timestamp {
+            margin-left: 0.15em;
+            font-size: 0.8em;
+        }
+
+        .chatlog__attachment {
+            display: inline-block;
+            position: relative;
+            margin-top: 0.3em;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .chatlog__attachment--hidden {
+            cursor: pointer;
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatlog__attachment--hidden * {
+            pointer-events: none;
+        }
+
+        .chatlog__attachment-spoiler-caption {
+            display: none;
+            z-index: 999;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 0.4em 0.8em;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-radius: 20px;
+            color: #dcddde;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .chatlog__attachment--hidden .chatlog__attachment-spoiler-caption {
+            display: block;
+        }
+
+        .chatlog__attachment--hidden:hover .chatlog__attachment-spoiler-caption {
+            color: #fff;
+        }
+
+        .chatlog__attachment-media {
+            vertical-align: top;
+            max-width: 45vw;
+            max-height: 500px;
+            border-radius: 3px;
+        }
+
+        .chatlog__attachment--hidden .chatlog__attachment-media {
+            filter: blur(44px);
+        }
+
+        .chatlog__attachment-generic {
+            width: 100%;
+            max-width: 520px;
+            height: 40px;
+            padding: 10px;
+            background-color: #2f3136;
+            border: 1px solid #292b2f;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .chatlog__attachment--hidden .chatlog__attachment-generic {
+            filter: blur(44px);
+        }
+
+        .chatlog__attachment-generic-icon {
+            float: left;
+            width: 30px;
+            height: 100%;
+            margin-right: 10px;
+        }
+
+        .chatlog__attachment-generic-size {
+            color: #72767d;
+            font-size: 12px;
+        }
+
+        .chatlog__attachment-generic-name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .chatlog__edited-timestamp {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chatlog__embed {
+            display: flex;
+            margin-top: 0.3em;
+            max-width: 520px;
+        }
+
+        .chatlog__embed-color-pill {
+            flex-shrink: 0;
+            width: 0.25em;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        .chatlog__embed-color-pill--default {
+            background-color: #202225;
+        }
+
+        .chatlog__embed-content-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0.5em 0.6em;
+            background-color: rgba(46, 48, 54, 0.3);
+            border: 1px solid rgba(46, 48, 54, 0.6);
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chatlog__embed-content {
+            display: flex;
+            width: 100%;
+        }
+
+        .chatlog__embed-text {
+            flex: 1;
+        }
+
+        .chatlog__embed-author {
+            display: flex;
+            margin-bottom: 0.3em;
+            align-items: center;
+        }
+
+        .chatlog__embed-author-icon {
+            margin-right: 0.5em;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .chatlog__embed-author-name {
+            font-size: 0.875em;
+            font-weight: 600;
+            direction: ltr;
+            unicode-bidi: bidi-override;
+            color: #ffffff
+        }
+
+        .chatlog__embed-author-name-link {
+            color: #ffffff;
+        }
+
+        .chatlog__embed-title {
+            margin-bottom: 0.2em;
+            font-size: 0.875em;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .chatlog__embed-description {
+            font-weight: 500;
+            font-size: 0.85em;
+            color: #dcddde;
+        }
+
+        .chatlog__embed-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0 0.5em;
+        }
+
+        .chatlog__embed-field {
+            flex: 0;
+            min-width: 100%;
+            max-width: 506px;
+            padding-top: 0.6em;
+            font-size: 0.875em;
+        }
+
+        .chatlog__embed-field--inline {
+            flex: 1;
+            flex-basis: auto;
+            min-width: 150px;
+        }
+
+        .chatlog__embed-field-name {
+            margin-bottom: 0.2em;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .chatlog__embed-field-value {
+            font-weight: 500;
+            color: #dcddde;
+        }
+
+        .chatlog__embed-thumbnail {
+            flex: 0;
+            margin-left: 1.2em;
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 3px;
+        }
+
+        .chatlog__embed-image-container {
+            margin-top: 0.6em;
+        }
+
+        .chatlog__embed-image {
+            max-width: 500px;
+            max-height: 400px;
+            border-radius: 3px;
+        }
+
+        .chatlog__embed-footer {
+            margin-top: 0.6em;
+            color: #dcddde;
+        }
+
+        .chatlog__embed-footer-icon {
+            margin-right: 0.2em;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+
+        .chatlog__embed-footer-text {
+            vertical-align: middle;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+
+        .chatlog__embed-plainimage {
+            vertical-align: top;
+            max-width: 45vw;
+            max-height: 500px;
+            border-radius: 3px;
+        }
+
+        .chatlog__embed-spotify {
+            border: 0;
+        }
+
+        .chatlog__embed-youtube-container {
+            margin-top: 0.6em;
+        }
+
+        .chatlog__embed-youtube {
+            border: 0;
+            border-radius: 3px;
+        }
+
+        .chatlog__reactions {
+            display: flex;
+        }
+
+        .chatlog__reaction {
+            display: flex;
+            align-items: center;
+            margin: 0.35em 0.1em 0.1em 0;
+            padding: .125rem .375rem;
+            background-color: #2f3136;
+            border-radius: 8px;
+            border-color: transparent;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .chatlog__reaction:hover {
+            border-color: hsla(0,0%,100%,.2);
+            border-width: 1px;
+            border-style: solid;
+            background-color: transparent;
+        }
+
+        .chatlog__reaction-count {
+            min-width: 9px;
+            margin-left: 0.35em;
+            font-size: 0.875em;
+            color: #b9bbbe;
+        }
+
+        .chatlog__reaction:hover .chatlog__reaction-count {
+            color: #dcddde;
+        }
+
+        .chatlog__bot-tag {
+            position: relative;
+            top: -.1em;
+            margin-left: 0.3em;
+            padding: 0.05em 0.3em;
+            border-radius: 3px;
+            line-height: 1.3;
+            background-color: #5865F2;
+            color: #ffffff;
+            font-size: 0.625em;
+            font-weight: 500;
+        }
+
+        .postamble {
+            margin: 1.4em 0.3em 0.6em 0.3em;
+            padding: 1em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .postamble__entry {
+            color: #ffffff;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler-text--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler-text--hidden');
+            }
+            if (element && element.classList.contains('chatlog__attachment--hidden')) {
+                event.preventDefault();
+                element.classList.remove('chatlog__attachment--hidden');
+            }
+        }
+    </script>
+
+    <svg style="display: none">
+        <symbol id="icon-attachment" viewBox="0 0 720 960">
+            <path fill="#f4f5fb" d="M50,935a25,25,0,0,1-25-25V50A25,25,0,0,1,50,25H519.6L695,201.32V910a25,25,0,0,1-25,25Z" />
+            <path fill="#7789c4" d="M509.21,50,670,211.63V910H50V50H509.21M530,0H50A50,50,0,0,0,0,50V910a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50h0V191Z" />
+            <path fill="#f4f5fb" d="M530,215a25,25,0,0,1-25-25V50a25,25,0,0,1,16.23-23.41L693.41,198.77A25,25,0,0,1,670,215Z" />
+            <path fill="#7789c4" d="M530,70.71,649.29,190H530V70.71M530,0a50,50,0,0,0-50,50V190a50,50,0,0,0,50,50H670a50,50,0,0,0,50-50Z" />
+        </symbol>
+    </svg>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="messages-MKWii.html_Files/e20a7a3d0d9a19ac6203646813174146-E1FC1.png" alt="Guild icon" loading="lazy">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">Val74</div>
+        <div class="preamble__entry">┗⎯⎯⎯⎯⎯|&#128173;|CHAT|&#128173;|⎯⎯⎯⎯⎯┑ / 〔&#128247;〕partage-screen</div>
+
+            <div class="preamble__entry preamble__entry--small">Ici, partagez vos images, gifs, etc.</div>
+
+            <div class="preamble__entry preamble__entry--small">
+After 27-Feb-22 11:30 AM            </div>
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_1ca20c3cf3b1c42a50a6d1bc265273d5-A0A0C.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="KaY ღ#0001" style="color: rgb(155,89,182)">HSXP</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947266819725598770&#39;)">
+Project Lima                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/4ffe1a292d83d66410494a392dff1ced-26F2F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="&quot;  Siiiidiiii#8039" data-user-id="785085355060625430" style="color: rgb(255,255,0)">&quot;  Siiiidiiii</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="947440431552151612" id="message-947440431552151612" title="Message sent: 27-Feb-22 11:30 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ok cimer</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:31 AM</span>
+
+            <div class="chatlog__message " data-message-id="947440904438943755" id="message-947440904438943755" title="Message sent: 27-Feb-22 11:31 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Je trouve le premier tour satisfaisant &#224; regarder</span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment " onclick="">
+
+                            <video class="chatlog__attachment-media" controls>
+                                <source src="messages-MKWii.html_Files/2022-02-27_01-00-03-4F6C8.mp4" alt="Video attachment" title="Video: 2022-02-27_01-00-03.mp4 (16,36 MB)">
+                            </video>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947440904438943755&#39;)">
+Je trouve le premier tour satisfaisant &#224; regarder                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="947441249143652382" id="message-947441249143652382" title="Message sent: 27-Feb-22 11:33 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">C&#39;est quoi le nom du circuit ?
+Je crois que je ne l&#39;ai jamais fait sur CTGP</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="947441343595180032" id="message-947441343595180032" title="Message sent: 27-Feb-22 11:33 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Normal elle vient d&#39;arriver mais je l&#39;attendais depuis une &#233;ternit&#233;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947441370400952340" id="message-947441370400952340" title="Message sent: 27-Feb-22 11:33 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">C&#39;est Kamek&#39;s Library</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:33 AM</span>
+
+            <div class="chatlog__message " data-message-id="947441377531273227" id="message-947441377531273227" title="Message sent: 27-Feb-22 11:33 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ahh ok je me disais bien</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947441473475981332" id="message-947441473475981332" title="Message sent: 27-Feb-22 11:34 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">faudra que je test</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:50 AM</span>
+
+            <div class="chatlog__message " data-message-id="947445459826380850" id="message-947445459826380850" title="Message sent: 27-Feb-22 11:50 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">on est obliger de hack la wii pour i jouer</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947445459826380850&#39;)">
+on est obliger de hack la wii pour i jouer                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="947445838010011708" id="message-947445838010011708" title="Message sent: 27-Feb-22 11:51 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Oui malheureusement <img loading="lazy" class="emoji " alt="MEESMILESWEAT6" title="MEESMILESWEAT6" src="https://cdn.discordapp.com/emojis/404380254132502528.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947445901142679592" id="message-947445901142679592" title="Message sent: 27-Feb-22 11:51 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Moi je l&#39;ai mit sur le mode Wii de ma Wii U</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947445838010011708&#39;)">
+Oui malheureusement <img loading="lazy" class="emoji " alt="MEESMILESWEAT6" title="MEESMILESWEAT6" src="https://cdn.discordapp.com/emojis/404380254132502528.png">                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:51 AM</span>
+
+            <div class="chatlog__message " data-message-id="947445901532737597" id="message-947445901532737597" title="Message sent: 27-Feb-22 11:51 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">on peut jouer sur emulateur</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947445901532737597&#39;)">
+on peut jouer sur emulateur                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:52 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446178021273692" id="message-947446178021273692" title="Message sent: 27-Feb-22 11:52 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&#231;a aurait &#233;t&#233; bien mais le cr&#233;ateur de CTGP a d&#233;sactiv&#233; la possibilit&#233; d&#39;y jouer sur &#233;mulateur pour &#233;viter la triche en online qui en d&#233;coulerait...</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947446295214297118" id="message-947446295214297118" title="Message sent: 27-Feb-22 11:53 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">du coup t&#39;es oblig&#233; d&#39;utiliser ce mod sur une vrai console</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:53 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446363950559242" id="message-947446363950559242" title="Message sent: 27-Feb-22 11:53 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">a mes j&#39;ai pas le droit d&#39;hack ma wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947446644125863936" id="message-947446644125863936" title="Message sent: 27-Feb-22 11:54 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sinon je peut jouer en ligne sur ma wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947446644125863936&#39;)">
+sinon je peut jouer en ligne sur ma wii                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446718813831219" id="message-947446718813831219" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Tu as Wimmfi ?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446732881551370" id="message-947446732881551370" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">non tu peux pas sur &#233;mu</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947446718813831219&#39;)">
+Tu as Wimmfi ?                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446775843799051" id="message-947446775843799051" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">non le dns de wimmfi</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446803945648128" id="message-947446803945648128" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Mais il existe d&#39;autres packs comme ctgp 1.02 ou classic</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947446732881551370&#39;)">
+non tu peux pas sur &#233;mu                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446816453038100" id="message-947446816453038100" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">c&#39;est exactement ce que j&#39;ai dit plus haut <img loading="lazy" class="emoji " alt="LUL" title="LUL" src="https://cdn.discordapp.com/emojis/789197988483694635.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:55 AM</span>
+
+            <div class="chatlog__message " data-message-id="947446840276680744" id="message-947446840276680744" title="Message sent: 27-Feb-22 11:55 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ou le hack pack de Huili</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947447066861387796" id="message-947447066861387796" title="Message sent: 27-Feb-22 11:56 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">C&#39;est simple &#224; crack et il n&#39;y a rien d&#39;ill&#233;gal le temps que c&#39;est pas pour t&#233;l&#233;charger des isos</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="947447357224652841" id="message-947447357224652841" title="Message sent: 27-Feb-22 11:57 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ducoup vous pouvai jouer en ligne sur le mkv de basse</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947448503670542336" id="message-947448503670542336" title="Message sent: 27-Feb-22 12:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Apr&#232;s aussi c&#39;est dommage car CTGP R reste le pack le plus complet</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947448503670542336&#39;)">
+Apr&#232;s aussi c&#39;est dommage car CTGP R reste le pack le plus complet                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947448621329162250" id="message-947448621329162250" title="Message sent: 27-Feb-22 12:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sinon mario kart wii deluxe</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947448680695332934" id="message-947448680695332934" title="Message sent: 27-Feb-22 12:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">bon dedans certains circuits (surtout les plus vieux) ont une qualit&#233; discutable mais il y a pas mal de circuits cool dessus</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947448621329162250&#39;)">
+sinon mario kart wii deluxe                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947448719324880946" id="message-947448719324880946" title="Message sent: 27-Feb-22 12:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ah je ne le connais pas celui l&#224;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="947448807854047272" id="message-947448807854047272" title="Message sent: 27-Feb-22 12:03 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">moi oui</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947448847284723733" id="message-947448847284723733" title="Message sent: 27-Feb-22 12:03 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je l&#39;avais d&#233;j&#224; test</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947448869707477032" id="message-947448869707477032" title="Message sent: 27-Feb-22 12:03 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">en plus les stats sont diff&#233;rents</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947448680695332934&#39;)">
+bon dedans certains circuits (surtout les plus vieux) ont une qualit&#233; discutable mais il y a pas mal de circuits cool dessus                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449170111897640" id="message-947449170111897640" title="Message sent: 27-Feb-22 12:04 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">vous saveez hack une wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449283374891008" id="message-947449283374891008" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oui</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947449296716959794" id="message-947449296716959794" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">c&#39;est easy</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449337795969085" id="message-947449337795969085" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">mais sans risque de break</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449353394614272" id="message-947449353394614272" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">il faut une carte sd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947449337795969085&#39;)">
+mais sans risque de break                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449400089800734" id="message-947449400089800734" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">si tu suis tout bien il n&#39;y a aucun risque</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947449441399472148" id="message-947449441399472148" title="Message sent: 27-Feb-22 12:05 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">J&#39;ai d&#233;j&#224; aid&#233; plusieurs potes</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449501751337000" id="message-947449501751337000" title="Message sent: 27-Feb-22 12:06 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">j&#39;ai pas de carte sd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947449170111897640&#39;)">
+vous saveez hack une wii                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449594244128800" id="message-947449594244128800" title="Message sent: 27-Feb-22 12:06 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je ne me rappelle plus trop sur Wii mais sur Wii U je sais je l&#39;ai fait il y a seulement quelques mois mdr</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449613403705384" id="message-947449613403705384" title="Message sent: 27-Feb-22 12:06 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">go aller chez action x)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449808002621450" id="message-947449808002621450" title="Message sent: 27-Feb-22 12:07 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sinon vous pouvez jouer en ligne sur mkw de base</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449897370656768" id="message-947449897370656768" title="Message sent: 27-Feb-22 12:07 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oui</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947449927221510174" id="message-947449927221510174" title="Message sent: 27-Feb-22 12:07 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">avec les dns de wiimmfi</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947449971400122388" id="message-947449971400122388" title="Message sent: 27-Feb-22 12:07 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">(j&#39;avais fait un tiktok dessus mdr)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="947449980455632916" id="message-947449980455632916" title="Message sent: 27-Feb-22 12:07 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">moi j&#39;ai dns de wiimmfi</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947449808002621450&#39;)">
+sinon vous pouvez jouer en ligne sur mkw de base                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="947450058880733244" id="message-947450058880733244" title="Message sent: 27-Feb-22 12:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Perso je ne l&#39;ai pas fait car j&#39;ai eu la flemme mdr
+Je pr&#233;f&#232;re autant lancer CTGP et me mettre en online Mondial pour faire les circuits de base x)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="947450127570862130" id="message-947450127570862130" title="Message sent: 27-Feb-22 12:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947450160672305172" id="message-947450160672305172" title="Message sent: 27-Feb-22 12:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je vais gry</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="947457821883105290" id="message-947457821883105290" title="Message sent: 27-Feb-22 12:39 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ses quoi ton code amis mkv</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="947461354250453042" id="message-947461354250453042" title="Message sent: 27-Feb-22 12:53 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="Tintin4747#1185">@Tintin4747</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462126698655745" id="message-947462126698655745" title="Message sent: 27-Feb-22 12:56 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Je peux passer le mien aussi au cas o&#249; pour jouer &#224; 3 XD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947462126698655745&#39;)">
+Je peux passer le mien aussi au cas o&#249; pour jouer &#224; 3 XD                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462195338440715" id="message-947462195338440715" title="Message sent: 27-Feb-22 12:56 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ouai</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947462256478814218" id="message-947462256478814218" title="Message sent: 27-Feb-22 12:56 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">pas cerquit custom svp</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462341484765204" id="message-947462341484765204" title="Message sent: 27-Feb-22 12:57 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">J&#39;utilise le m&#234;me pour tout</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947462393259233280" id="message-947462393259233280" title="Message sent: 27-Feb-22 12:57 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Pour le ranked, normal ou custom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462533982347275" id="message-947462533982347275" title="Message sent: 27-Feb-22 12:57 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">pas de map custom car sinon je bug car je suis en version normal</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462609022648340" id="message-947462609022648340" title="Message sent: 27-Feb-22 12:58 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Tu peux pas join quand je joue sur les maps custom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947457821883105290&#39;)">
+ses quoi ton code amis mkv                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462654010732574" id="message-947462654010732574" title="Message sent: 27-Feb-22 12:58 PM">
+
+                    <div class="chatlog__attachment " onclick="">
+
+                            <a href="messages-MKWii.html_Files/20220227_125713-2B1F7.jpg">
+                                <img class="chatlog__attachment-media" src="messages-MKWii.html_Files/20220227_125713-2B1F7.jpg" alt="Image attachment" title="Image: 20220227_125713.jpg (3,37 MB)" loading="lazy">
+                            </a>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462666035798026" id="message-947462666035798026" title="Message sent: 27-Feb-22 12:58 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Il dira que je suis en continental</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="947462767911247892" id="message-947462767911247892" title="Message sent: 27-Feb-22 12:58 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki je add tintin apres</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947462876568903700" id="message-947462876568903700" title="Message sent: 27-Feb-22 12:59 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">marmon code amis</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 12:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463058110939156" id="message-947463058110939156" title="Message sent: 27-Feb-22 12:59 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Bon par contre je serai s&#251;rement claqu&#233; car &#231;a fait un moment que j&#39;ai pas jou&#233; s&#233;rieusement sur MK Wii Mdr</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947463058110939156&#39;)">
+Bon par contre je serai s&#251;rement claqu&#233; car &#231;a fait un moment que j&#39;ai pas jou&#233; s&#233;rieusement sur MK Wii Mdr                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463089899569162" id="message-947463089899569162" title="Message sent: 27-Feb-22 01:00 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463152805740574" id="message-947463152805740574" title="Message sent: 27-Feb-22 01:00 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Je suis pas chez moi xd</span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment " onclick="">
+
+                            <a href="messages-MKWii.html_Files/IMG_20220227_130003-5E1EF.jpg">
+                                <img class="chatlog__attachment-media" src="messages-MKWii.html_Files/IMG_20220227_130003-5E1EF.jpg" alt="Image attachment" title="Image: IMG_20220227_130003.jpg (49,5 KB)" loading="lazy">
+                            </a>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463205444259870" id="message-947463205444259870" title="Message sent: 27-Feb-22 01:00 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947463336503681044" id="message-947463336503681044" title="Message sent: 27-Feb-22 01:01 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tintin on va faire des 1v1</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463668545749002" id="message-947463668545749002" title="Message sent: 27-Feb-22 01:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Moi mon code ami il est v&#233;rifie pour que je puisse faire du ranked <img loading="lazy" class="emoji " alt="catdance" title="catdance" src="https://cdn.discordapp.com/emojis/884947420964872242.gif"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947463668545749002&#39;)">
+Moi mon code ami il est v&#233;rifie pour que je puisse faire du ranked <img loading="lazy" class="emoji " alt="catdance" title="catdance" src="https://cdn.discordapp.com/emojis/884947420964872242.gif">                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463705321406467" id="message-947463705321406467" title="Message sent: 27-Feb-22 01:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947463733351952404" id="message-947463733351952404" title="Message sent: 27-Feb-22 01:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je vais sur ma wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947463668545749002&#39;)">
+Moi mon code ami il est v&#233;rifie pour que je puisse faire du ranked <img loading="lazy" class="emoji " alt="catdance" title="catdance" src="https://cdn.discordapp.com/emojis/884947420964872242.gif">                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947463823462400091" id="message-947463823462400091" title="Message sent: 27-Feb-22 01:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ah styl&#233; &#231;a <img loading="lazy" class="emoji " alt="CoolChamp" title="CoolChamp" src="https://cdn.discordapp.com/emojis/645118109413408818.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="947464055449329705" id="message-947464055449329705" title="Message sent: 27-Feb-22 01:03 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Mon FC est synchro avec mon discord</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="947465330622611466" id="message-947465330622611466" title="Message sent: 27-Feb-22 01:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tu doit add mon code amis @tintin 1294-5061-4229</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947465433173336104" id="message-947465433173336104" title="Message sent: 27-Feb-22 01:09 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="Tintin4747#1185">@Tintin4747</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947465637440147496" id="message-947465637440147496" title="Message sent: 27-Feb-22 01:10 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ducoup tintin tu add</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947466288320614410" id="message-947466288320614410" title="Message sent: 27-Feb-22 01:12 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tintin co to</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947467787138375730" id="message-947467787138375730" title="Message sent: 27-Feb-22 01:18 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tintin</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947468181562339398" id="message-947468181562339398" title="Message sent: 27-Feb-22 01:20 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tintin tu joue ou pas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="947471477651959809" id="message-947471477651959809" title="Message sent: 27-Feb-22 01:33 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">mais le lien discord comme le lien youtube</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/7aa23b9c46aa7e9c65d1988f060240bd-5ED50.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TimYthique#9384" data-user-id="802539641110265917" style="color: rgb(84,110,122)">TimYthique</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="947471674784247838" id="message-947471674784247838" title="Message sent: 27-Feb-22 01:34 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ok merci <img loading="lazy" class="emoji " alt="👍" title="thumbsup" src="https://twemoji.maxcdn.com/2/svg/1f44d.svg"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947471808288931870" id="message-947471808288931870" title="Message sent: 27-Feb-22 01:34 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">(je supprime ma banniere du Discord car sinon on va me ban pour pub)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:34 PM</span>
+
+            <div class="chatlog__message " data-message-id="947471882112888902" id="message-947471882112888902" title="Message sent: 27-Feb-22 01:34 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sinon ta une wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/7aa23b9c46aa7e9c65d1988f060240bd-5ED50.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TimYthique#9384" data-user-id="802539641110265917" style="color: rgb(84,110,122)">TimYthique</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="947471999142355024" id="message-947471999142355024" title="Message sent: 27-Feb-22 01:35 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ouais</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="947472055627055145" id="message-947472055627055145" title="Message sent: 27-Feb-22 01:35 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tu joue en ligne a mkw</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/7aa23b9c46aa7e9c65d1988f060240bd-5ED50.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TimYthique#9384" data-user-id="802539641110265917" style="color: rgb(84,110,122)">TimYthique</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="947472121074970654" id="message-947472121074970654" title="Message sent: 27-Feb-22 01:35 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Nn deso</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="947472177366720582" id="message-947472177366720582" title="Message sent: 27-Feb-22 01:36 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tu peut pas  ou tu veut pas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947472875726733312" id="message-947472875726733312" title="Message sent: 27-Feb-22 01:38 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="TimYthique#9384">@TimYthique</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/7aa23b9c46aa7e9c65d1988f060240bd-5ED50.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TimYthique#9384" data-user-id="802539641110265917" style="color: rgb(84,110,122)">TimYthique</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="947473695536984105" id="message-947473695536984105" title="Message sent: 27-Feb-22 01:42 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">nn je peux pas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474387009953802" id="message-947474387009953802" title="Message sent: 27-Feb-22 01:44 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sa te met un message d&#39;erreu</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474439182905344" id="message-947474439182905344" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Le fameux 86420?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947474487497068574" id="message-947474487497068574" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ah non j&#39;ai mal lu mdr</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474575493562379" id="message-947474575493562379" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tu peut jouer</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474599162032178" id="message-947474599162032178" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Je suis pas chez moi</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474637678317578" id="message-947474637678317578" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ah oki j&#39;att tintin la</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474650751991898" id="message-947474650751991898" title="Message sent: 27-Feb-22 01:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Mais tu peux d&#233;j&#224; m&#39;ajouter stv je suis openhost</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947474695563915304" id="message-947474695563915304" title="Message sent: 27-Feb-22 01:46 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Donc tu peux me join sans que je t&#39;ajoute</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474711665840158" id="message-947474711665840158" title="Message sent: 27-Feb-22 01:46 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">j&#39;ai deja add ton code amis</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947474768934879312" id="message-947474768934879312" title="Message sent: 27-Feb-22 01:46 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">faut etre co</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 01:46 PM</span>
+
+            <div class="chatlog__message " data-message-id="947474769803083816" id="message-947474769803083816" title="Message sent: 27-Feb-22 01:46 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Oh oki :)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 02:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="947486037805002802" id="message-947486037805002802" title="Message sent: 27-Feb-22 02:31 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="GarloulouLeAsriel#8701">@GarloulouLeAsriel</span> je suis co tu peux m&#39;ajouter</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947486073158791229" id="message-947486073158791229" title="Message sent: 27-Feb-22 02:31 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Mais apr&#232;s je deco</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947486548511825980" id="message-947486548511825980" title="Message sent: 27-Feb-22 02:33 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Cbon je t&#39;ai</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 02:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="947488021295546369" id="message-947488021295546369" title="Message sent: 27-Feb-22 02:39 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 02:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="947489614711619634" id="message-947489614711619634" title="Message sent: 27-Feb-22 02:45 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Stv je peux jouer</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947489614711619634&#39;)">
+Stv je peux jouer                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 03:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="947505272560168980" id="message-947505272560168980" title="Message sent: 27-Feb-22 03:47 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947489614711619634&#39;)">
+Stv je peux jouer                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 03:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="947506584777539584" id="message-947506584777539584" title="Message sent: 27-Feb-22 03:52 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="Marmon#9560">@Marmon</span>  tu cree la salle</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947489614711619634&#39;)">
+Stv je peux jouer                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="947508467059531916" id="message-947508467059531916" title="Message sent: 27-Feb-22 04:00 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">tes la</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947510020986257461" id="message-947510020986257461" title="Message sent: 27-Feb-22 04:06 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="Marmon#9560">@Marmon</span>  tu te co quand</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947508467059531916&#39;)">
+tes la                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="947510446389346304" id="message-947510446389346304" title="Message sent: 27-Feb-22 04:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ui</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="947510566635839489" id="message-947510566635839489" title="Message sent: 27-Feb-22 04:08 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">on joue a mario kart</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="947510776158109816" id="message-947510776158109816" title="Message sent: 27-Feb-22 04:09 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">laisse-moi faire la salle</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947510776158109816&#39;)">
+laisse-moi faire la salle                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="947510857917669377" id="message-947510857917669377" title="Message sent: 27-Feb-22 04:09 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki mes sa marque que tes pas co</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="947510901521657888" id="message-947510901521657888" title="Message sent: 27-Feb-22 04:10 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">att</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="947511270163247105" id="message-947511270163247105" title="Message sent: 27-Feb-22 04:11 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Bon <span class="mention" title="GarloulouLeAsriel#8701">@GarloulouLeAsriel</span> je te confirme que c&#39;est mort pour aujourd&#39;hui</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947511352681979995" id="message-947511352681979995" title="Message sent: 27-Feb-22 04:11 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Et je ne retrouve ma console qu&#39;en fin se semaine <img loading="lazy" class="emoji " alt="sadcat" title="sadcat" src="https://cdn.discordapp.com/emojis/523219320575230007.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947511378959302708" id="message-947511378959302708" title="Message sent: 27-Feb-22 04:11 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Deso</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="947511764340342836" id="message-947511764340342836" title="Message sent: 27-Feb-22 04:13 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">par contre finalement jpp faire le gp entier :&#39;)</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947511797475311616" id="message-947511797475311616" title="Message sent: 27-Feb-22 04:13 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je dois casser la salle apr&#232;s la course</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Marmon#9560" style="color: rgb(245,229,0)">Marmon</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947511764340342836&#39;)">
+par contre finalement jpp faire le gp entier :&#39;)                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="947511866807177309" id="message-947511866807177309" title="Message sent: 27-Feb-22 04:13 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">quoi</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 04:14 PM</span>
+
+            <div class="chatlog__message " data-message-id="947511954933686283" id="message-947511954933686283" title="Message sent: 27-Feb-22 04:14 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je vais devoir y aller</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 05:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="947524154230460486" id="message-947524154230460486" title="Message sent: 27-Feb-22 05:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">je hack ma wii de dolfin</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947524192599953488" id="message-947524192599953488" title="Message sent: 27-Feb-22 05:02 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">et ma wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="947621548934692945" id="message-947621548934692945" title="Message sent: 27-Feb-22 11:29 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="GarloulouLeAsriel#8701">@GarloulouLeAsriel</span> petite info : le circuit que <span class="mention" title="Marmon#9560">@Marmon</span> avait montr&#233; plus haut qui a men&#233; en partie &#224; cette discussion <s>(qui devient limite hors sujet vu le sujet de ce salon mdr)</s> est disponible sur le modpack Mario Kart Wii Deluxe</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947621606434439188" id="message-947621606434439188" title="Message sent: 27-Feb-22 11:29 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">et ce modpack est compatible Dolphin</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="947621636373352508" id="message-947621636373352508" title="Message sent: 27-Feb-22 11:30 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">C&#39;est sur ce pack que je l&#39;avais d&#233;couvert haha</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">27-Feb-22 11:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="947621672461160498" id="message-947621672461160498" title="Message sent: 27-Feb-22 11:30 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ah ok je ne savais pas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947621705138991175" id="message-947621705138991175" title="Message sent: 27-Feb-22 11:30 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">en vrai je ne connaissais m&#234;me pas ce pack avant mdr</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/b23a8a769c286b50b8404b4c87a33ee4-15BA9.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Nubilo#2441" data-user-id="843419852633800754" style="color: rgb(255,255,0)">Nubilo</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 12:16 AM</span>
+
+            <div class="chatlog__message " data-message-id="947633317421940747" id="message-947633317421940747" title="Message sent: 28-Feb-22 12:16 AM">
+
+                    <div class="chatlog__attachment " onclick="">
+
+                            <video class="chatlog__attachment-media" controls>
+                                <source src="messages-MKWii.html_Files/c01f2ad71b1e488c971f6abbcfedff64-7CFCE.mov" alt="Video attachment" title="Video: c01f2ad71b1e488c971f6abbcfedff64.mov (336,59 KB)">
+                            </video>
+                    </div>
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947621548934692945&#39;)">
+<span class="mention" title="GarloulouLeAsriel#8701">@GarloulouLeAsriel</span> petite info : le circuit que <span class="mention" title="Marmon#9560">@Marmon</span> avait montr&#233; plus haut qui a men&#233; en partie &#224; cette discussion <s>(qui devient limite hors sujet vu le sujet de ce salon mdr)</s> est disponible sur le modpack Mario Kart Wii Deluxe                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="947744379165110313" id="message-947744379165110313" title="Message sent: 28-Feb-22 07:37 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ducoup je peut y jouer</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947744379165110313&#39;)">
+ducoup je peut y jouer                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="947744505262669935" id="message-947744505262669935" title="Message sent: 28-Feb-22 07:38 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Bien vu</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="947744610338340924" id="message-947744610338340924" title="Message sent: 28-Feb-22 07:38 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">bas go instale dolphin</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:38 AM</span>
+
+            <div class="chatlog__message " data-message-id="947744645402755134" id="message-947744645402755134" title="Message sent: 28-Feb-22 07:38 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">En plus c&#39;est ultra simple &#224; utiliser sur Dolphin faut juste lancer le modpack comme un simple jeu</span>
+
+                                <span class="chatlog__edited-timestamp" title="28-Feb-22 07:38 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="947744684627873812" id="message-947744684627873812" title="Message sent: 28-Feb-22 07:39 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oki</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947745663595216927" id="message-947745663595216927" title="Message sent: 28-Feb-22 07:42 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">jsp pourquoi mes la dolphin fonctione</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="Tintin4747#1185" style="color: rgb(231,76,60)">Tintin4747</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947744645402755134&#39;)">
+En plus c&#39;est ultra simple &#224; utiliser sur Dolphin faut juste lancer le modpack comme un simple jeu                    </span>
+
+                        <span class="chatlog__reference-edited-timestamp" title="28-Feb-22 07:38 AM">(edited)</span>
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GarloulouLeAsriel#8701" data-user-id="800995810447589416" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="947746477634109440" id="message-947746477634109440" title="Message sent: 28-Feb-22 07:46 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">fait voir car je trouve pas</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947747416478728232" id="message-947747416478728232" title="Message sent: 28-Feb-22 07:49 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">il faut le jeu</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+        <div class="chatlog__reference-symbol"></div>
+        <div class="chatlog__reference">
+                <img class="chatlog__reference-avatar" src="messages-MKWii.html_Files/506e5158d1740614de866dae333265dd-AB98F.png" alt="Avatar" loading="lazy">
+                <span class="chatlog__reference-name" title="GarloulouLeAsriel#8701" style="color: rgb(155,89,182)">GarloulouLeAsriel</span>
+                <div class="chatlog__reference-content">
+                    <span class="chatlog__reference-link" onclick="scrollToMessage(event, &#39;947746477634109440&#39;)">
+fait voir car je trouve pas                    </span>
+
+                </div>
+        </div>
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 07:57 AM</span>
+
+            <div class="chatlog__message " data-message-id="947749217793884190" id="message-947749217793884190" title="Message sent: 28-Feb-22 07:57 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Pourtant j&#39;ai mit MKWD dans le r&#233;pertoire des jeux et il a reconnu instant</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="947749507976822804" id="message-947749507976822804" title="Message sent: 28-Feb-22 07:58 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Apr&#232;s dans mon dossier de jeux Dolphin j&#39;avais aussi MKW donc bon <img loading="lazy" class="emoji " alt="blobthinking" title="blobthinking" src="https://cdn.discordapp.com/emojis/717307684550082561.gif"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/bade0e699b99612e67b5f30e310109c9-874CD.png" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Marmon#9560" data-user-id="351647711574884353" style="color: rgb(245,229,0)">Marmon</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 11:45 AM</span>
+
+            <div class="chatlog__message " data-message-id="947806733886185493" id="message-947806733886185493" title="Message sent: 28-Feb-22 11:45 AM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Pour dolphin en ligne il faut mettre la nand de sa wii</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+
+<div class="chatlog__message-group">
+
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="messages-MKWii.html_Files/a_d9cfa7bd291073b2485d5eedcca47481-6C527.gif" alt="Avatar" loading="lazy">
+    </div>
+
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Tintin4747#1185" data-user-id="278619737150324738" style="color: rgb(231,76,60)">Tintin4747</span>
+
+
+        <span class="chatlog__timestamp">28-Feb-22 01:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="947829946380845087" id="message-947829946380845087" title="Message sent: 28-Feb-22 01:17 PM">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Ouaip je sais
+Apr&#232;s j&#39;ai pas trop ma wii et ma wii u a disposition actuellement <img loading="lazy" class="emoji " alt="HyperSweat" title="HyperSweat" src="https://cdn.discordapp.com/emojis/588431730449580051.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 139 message(s)</div>
+</div>
+
+</body>
+
+</html>
